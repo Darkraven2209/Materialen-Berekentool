@@ -31,7 +31,7 @@
 
         .container {
             width: 100%;
-            max-width: 600px;
+            max-width: 900px; /* Iets breder gemaakt zodat ze goed naast elkaar passen */
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 8px;
@@ -48,11 +48,19 @@
             padding-bottom: 12px;
         }
 
+        /* Veranderd naar een Grid layout die items mooi naast elkaar zet */
         .material-list {
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: 1fr;
             gap: 12px;
             margin-bottom: 24px;
+        }
+
+        /* Als het scherm breder is dan 600px, zet de items dan in 2 kolommen naast elkaar */
+        @media (min-width: 600px) {
+            .material-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         .material-item {
@@ -96,6 +104,7 @@
             font-weight: bold;
             font-size: 14px;
             transition: background 0.2s;
+            user-select: none;
         }
 
         .btn-step:hover {
@@ -207,7 +216,6 @@
 </div>
 
 <script>
-    // Exact jouw materialen en prijzen per stuk
     const materials = [
         { id: 'metaalschroot', name: 'Metaalschroot', price: 20 },
         { id: 'ijzer', name: 'Ijzer', price: 20 },
@@ -226,7 +234,6 @@
 
     const listContainer = document.getElementById('materialList');
 
-    // Genereer de HTML voor alle materialen
     materials.forEach(item => {
         const div = document.createElement('div');
         div.className = 'material-item';
@@ -244,10 +251,8 @@
         listContainer.appendChild(div);
     });
 
-    // Lucide iconen initialiseren
     lucide.createIcons();
 
-    // Plus en min knoppen logica
     function adjust(id, amount) {
         const input = document.getElementById(`input-${id}`);
         let current = parseInt(input.value) || 0;
@@ -257,7 +262,6 @@
         calculateTotal();
     }
 
-    // Bereken het totale aantal en de waarde
     function calculateTotal() {
         let totalItems = 0;
         let totalPrice = 0;
@@ -273,7 +277,6 @@
         document.getElementById('totalPrice').innerText = `€ ${totalPrice}`;
     }
 
-    // Resetknop functie
     function resetAll() {
         materials.forEach(item => {
             document.getElementById(`input-${item.id}`).value = 0;
